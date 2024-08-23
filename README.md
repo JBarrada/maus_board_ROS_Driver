@@ -1,7 +1,8 @@
+> [!NOTE]
+> Currently a work in progress
+
 ## ROS Driver for the MAUS board
 ROS driver for the [MAUS board](https://github.com/JBarrada/maus_board) Raspberry Pi hat for autonomous vehicles.
-
-Currently a work in progress
 
 ### Goals
 - [ ] ROS2 driver
