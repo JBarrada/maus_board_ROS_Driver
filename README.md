@@ -7,4 +7,4 @@ ROS driver for the [MAUS board](https://github.com/JBarrada/maus_board) Raspberr
 ### Goals
 - [ ] ROS2 driver
 - [ ] Example project that demonstrates controlling a vehicle through the MAUS board via a joystick
-- [ ] Instructions on how to setup and use
+- [ ] Instructions on how to setup a Raspberry Pi with ROS and use the driver
