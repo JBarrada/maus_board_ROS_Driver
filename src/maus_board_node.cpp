@@ -1,6 +1,6 @@
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/imu.hpp>
-#include <std_msgs/msg/float32.hpp>      // For temperature, voltage, current, etc.
+#include <std_msgs/msg/float32.hpp> // For temperature, voltage, current, etc.
 #include <std_msgs/msg/u_int32.hpp>
 #include <geometry_msgs/msg/vector3.hpp> // For angular velocity and linear acceleration
 
@@ -40,7 +40,6 @@ public:
   }
 
 private:
-
   void steering_callback(const std_msgs::msg::Float32::SharedPtr msg)
   {
     steering_angle_ = msg->data;
@@ -72,7 +71,7 @@ private:
   rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr steering_sub_;
   rclcpp::Subscription<std_msgs::msg::UInt32>::SharedPtr led0_sub;
   float steering_angle_; // Store the received steering angle
-  float throttle_; // Store the received throttle
+  float throttle_;       // Store the received throttle
   std::vector<uint32_t> colours_;
 };
 
