@@ -1,0 +1,19 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo
+            // ros2 run --prefix 'gdbserver localhost:3000' maus_board maus_board_node 
+            "name": "maus_node_debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/../../build/maus_board/maus_board_node",
+            "cwd": "/",
+            "miDebuggerServerAddress": "localhost:3000",
+        }
+
+    ]
+}
