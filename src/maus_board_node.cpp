@@ -11,10 +11,16 @@ using namespace std::chrono_literals;
 class MausBoardNode : public rclcpp::Node
 {
 public:
-  MausBoardNode() : Node("maus_board_driver")
+  MausBoardNode() : Node("maus_board_driver"), maus_board_(std::make_unique<MausBoard>(nullptr,nullptr))
   {
     colours_.resize(3);
     RCLCPP_INFO(this->get_logger(), "Starting up MausBoardNode..."); // Debug message
+
+    // Declare parameters
+    this->declare_parameter<int>("min_servo_value", 1200);
+    this->declare_parameter<int>("max_servo_value", 1800);
+    this->declare_parameter<int>("servo_centre", 1500);
+    this->declare_parameter<float>("servo_scale", 500.0f);
 
     if (!maus_board_->startReading())
     {
@@ -60,11 +66,15 @@ private:
 
   uint16_t mapSteeringAngleToServo(float steering_angle)
   {
-    // TODO: make these into parameters
-    float mapped_value = 1500.0f + steering_angle * 500.0f;
-    mapped_value = std::max(1000.0f, std::min(2000.0f, mapped_value));
+    int min_servo_value_ = this->get_parameter("min_servo_value").as_int();
+    int max_servo_value_ = this->get_parameter("max_servo_value").as_int();
+    int servo_centre_ = this->get_parameter("servo_centre").as_int();
+    float servo_scale_ = this->get_parameter("servo_scale").as_double();
 
-    return static_cast<uint16_t>(mapped_value);
+    int mapped_value = servo_centre_ + steering_angle * servo_scale_;
+    mapped_value = std::max(min_servo_value_, std::min(max_servo_value_, mapped_value));
+
+    return static_cast<uint16_t>(std::max(mapped_value,0)); //ensure positive
   }
 
   std::unique_ptr<MausBoard> maus_board_;
@@ -73,7 +83,7 @@ private:
   float steering_angle_; // Store the received steering angle
   float throttle_;       // Store the received throttle
   std::vector<uint32_t> colours_;
-};
+  };
 
 int main(int argc, char *argv[])
 {
