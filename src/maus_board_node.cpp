@@ -14,18 +14,18 @@ public:
   MausBoardNode() : Node("maus_board_driver"), maus_board_(std::make_unique<MausBoard>(nullptr,nullptr))
   {
     colours_.resize(3);
-    RCLCPP_INFO(this->get_logger(), "Starting up MausBoardNode..."); // Debug message
+    RCLCPP_INFO(this->get_logger(), "Starting up MausBoardNode...");
 
     // Declare parameters
-    this->declare_parameter<int>("min_servo_value", 1200);
-    this->declare_parameter<int>("max_servo_value", 1800);
+    this->declare_parameter<int>("min_servo_value", 1080);
+    this->declare_parameter<int>("max_servo_value", 1890); 
     this->declare_parameter<int>("servo_centre", 1500);
-    this->declare_parameter<float>("servo_scale", 500.0f);
+    this->declare_parameter<float>("servo_scale", 800.0f);
 
-    this->declare_parameter<int>("min_throttle_value", 1200);
-    this->declare_parameter<int>("max_throttle_value", 1800);
+    this->declare_parameter<int>("min_throttle_value", 1500); //1200
+    this->declare_parameter<int>("max_throttle_value", 1545); //1800
     this->declare_parameter<int>("throttle_neutral", 1500);
-    this->declare_parameter<float>("throttle_scale", 500.0f);
+    this->declare_parameter<float>("throttle_scale", 100.0f); 
 
     if (!maus_board_->startReading())
     {
@@ -53,9 +53,9 @@ public:
 
   ~MausBoardNode()
   {
-    RCLCPP_INFO(this->get_logger(), "Shutting down MausBoardNode..."); // Debug message
+    RCLCPP_WARN(this->get_logger(), "Shutting down MausBoardNode..."); // Debug message
     maus_board_->stopReading();
-    RCLCPP_INFO(this->get_logger(), "MausBoard stopped."); // Debug message
+    RCLCPP_WARN(this->get_logger(), "MausBoard stopped."); // Debug message
   }
 
 private:
@@ -69,7 +69,7 @@ private:
   void steering_callback(const std_msgs::msg::Float32::SharedPtr msg)
   {
     steering_angle_ = msg->data;
-    RCLCPP_INFO(this->get_logger(), "Received steering angle: %f", steering_angle_);
+    RCLCPP_DEBUG(this->get_logger(), "Received steering angle: %f", steering_angle_);
     // Convert steering angle to servo command
     uint16_t steering_command = mapSteeringAngleToServo(steering_angle_);
     uint16_t throttle_command = mapThrottleToServo(throttle_);
@@ -79,7 +79,7 @@ private:
   void throttle_callback(const std_msgs::msg::Float32::SharedPtr msg)
   {
     throttle_ = msg->data;
-    RCLCPP_INFO(this->get_logger(), "Received throttle: %f", throttle_);
+    RCLCPP_DEBUG(this->get_logger(), "Received throttle: %f", throttle_);
     // Convert steering angle to servo command
     uint16_t steering_command = mapSteeringAngleToServo(steering_angle_);
     uint16_t throttle_command = mapThrottleToServo(throttle_);
